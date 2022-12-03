@@ -1,40 +1,25 @@
-import setuptools
+"""
+#-*- coding:utf-8 -*-
+@Time    : 2022/12/2 22:52
+@Author  : lawrencechen
+@contact : cjs1020440147@icloud.com
+@Software: Pycharm Professional Version
+
+"""
+"""
+#-*- coding:utf-8 -*-
+@Time    : 2022/12/2 21:44
+@Author  : lawrencechen
+@contact : cjs1020440147@icloud.com
+@Software: Pycharm Professional Version
+
+"""
+
 import os
+
 import torch
 from setuptools import find_packages, setup
 from torch.utils.cpp_extension import BuildExtension, CppExtension, CUDAExtension
-
-
-cxx_flags = []
-ext_libs = []
-
-authors = [
-        'Jiaao He', 
-        'Jiezhong Qiu', 
-        'Aohan Zeng', 
-        'Tiago Antunes', 
-        'Jinjun Peng', 
-        'Qin Li',
-        'Mingshu Zhai'
-]
-
-is_rocm_pytorch = False
-if torch.__version__ >= '1.5':
-    from torch.utils.cpp_extension import ROCM_HOME
-    is_rocm_pytorch = True if ((torch.version.hip is not None) and (ROCM_HOME is not None)) else False
-
-if os.environ.get('USE_NCCL', '1') == '1':
-    cxx_flags.append('-DFMOE_USE_NCCL')
-    cxx_flags.append('-DUSE_C10D_NCCL')
-    if is_rocm_pytorch:
-        ext_libs.append('rccl')
-    else:
-        ext_libs.append('nccl')
-
-if is_rocm_pytorch:
-    define_macros=[('FMOE_USE_HIP', None)]
-else:
-    define_macros=[]
 
 
 def make_cuda_ext(
@@ -70,40 +55,7 @@ def make_cuda_ext(
     )
 
 
-if __name__ == '__main__':
-    # setuptools.setup(
-    #     name='fastmoe',
-    #     version='1.0.0',
-    #     description='An efficient Mixture-of-Experts system for PyTorch',
-    #     author=', '.join(authors),
-    #     author_email='hja20@mails.tsinghua.edu.cn',
-    #     license='Apache-2',
-    #     url='https://github.com/laekov/fastmoe',
-    #     packages=['fmoe', 'fmoe.megatron', 'fmoe.gates', 'fmoe.fastermoe'],
-    #     ext_modules=[
-    #         CUDAExtension(
-    #             name='fmoe_cuda',
-    #             sources=[
-    #                 'cuda/stream_manager.cpp',
-    #                 'cuda/local_exchange.cu',
-    #                 'cuda/balancing.cu',
-    #                 'cuda/global_exchange.cpp',
-    #                 'cuda/parallel_linear.cu',
-    #                 'cuda/fmoe_cuda.cpp',
-    #                 'cuda/fastermoe/smart_schedule.cpp',
-    #                 ],
-    #             define_macros=define_macros,
-    #             extra_compile_args={
-    #                 'cxx': cxx_flags,
-    #                 'nvcc': cxx_flags
-    #                 },
-    #             libraries=ext_libs
-    #             )
-    #         ],
-    #     cmdclass={
-    #         'build_ext': BuildExtension
-    #     })
-
+if __name__ == "__main__":
     setup(
         name="mmdet3d",
         packages=find_packages(),
@@ -119,24 +71,6 @@ if __name__ == '__main__':
         ],
         license="Apache License 2.0",
         ext_modules=[
-            CUDAExtension(
-                name='fmoe_cuda',
-                sources=[
-                    'cuda/stream_manager.cpp',
-                    'cuda/local_exchange.cu',
-                    'cuda/balancing.cu',
-                    'cuda/global_exchange.cpp',
-                    'cuda/parallel_linear.cu',
-                    'cuda/fmoe_cuda.cpp',
-                    'cuda/fastermoe/smart_schedule.cpp',
-                ],
-                define_macros=define_macros,
-                extra_compile_args={
-                    'cxx': cxx_flags,
-                    'nvcc': cxx_flags
-                },
-                libraries=ext_libs
-            ),
             make_cuda_ext(
                 name="sparse_conv_ext",
                 module="mmdet3d.ops.spconv",
@@ -243,4 +177,3 @@ if __name__ == '__main__':
         cmdclass={"build_ext": BuildExtension},
         zip_safe=False,
     )
-

@@ -119,6 +119,6 @@ if __name__ == '__main__':
         locals()[sys.argv[1]](**args)
     else:
         # _ensure_initialized()
-        # test_gshard_gate(4096, 1024, 4, .2)
-        _test_gshard_gate(8, 16, 4, .1)
+        test_gshard_gate(4096, 1024, 4, .2)
+        # _test_gshard_gate(8, 16, 4, .1)
         # test_switch_gate(4096, 1024, 4, .2)

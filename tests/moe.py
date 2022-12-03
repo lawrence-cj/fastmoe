@@ -28,7 +28,7 @@ class BruteForceMoELinear(nn.Module):
         self.top_k = top_k
 
     def forward(self, inp, gate_idx, gate_score):
-        inp = inp.repeat_interleave(repeats=self.top_k, dim=0)
+        # inp = inp.repeat_interleave(repeats=self.top_k, dim=0)
         gate_long = gate_idx.long().view(-1)
         batch_size = inp.size(0)
         o = torch.empty(batch_size, self.d_model, dtype=inp.dtype, device=inp.device)
